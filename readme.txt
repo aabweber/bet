@@ -1,4 +1,4 @@
-=== Akismet Anti-Spam ===
+=== Bets ===
 Contributors: aabweber
 Tags: bet
 License: GPLv2 or later
