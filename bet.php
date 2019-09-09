@@ -27,33 +27,38 @@ class Bet{
      */
     function __construct(){
         $this->baseURL = plugin_dir_url( __FILE__ );
-        add_action( 'wp_enqueue_scripts',
-            function (){
-                wp_enqueue_style('betstyle', $this->baseURL.'css/main.css');
-                wp_enqueue_script('betscript', $this->baseURL.'js/main.js');
-            }
-        );
-        register_activation_hook( __FILE__, function(){
-            $betPageID = get_option('bet_plugin_page');
-            if (!$betPageID){
-                $bet_page_array = array(
-                    'post_title' => 'Bet page',
-                    'post_content' => 'Bet page content',
-                    'post_status' => 'publish'
-                );
+        add_action( 'wp_enqueue_scripts', [$this, 'insertScripts']);
+        register_activation_hook( __FILE__, [$this, 'onActivate']);
+        register_deactivation_hook(__FILE__, [$this, 'onDeActivate']);
+        add_action('admin_menu', [$this, 'addPluginSettingsMenu']);
+    }
 
-                $betPageID = wp_insert_post( $bet_page_array );
-                update_option('bet_plugin_page', $betPageID);
-            }
-        });
-        register_deactivation_hook(__FILE__, function(){
-            delete_option('bet_plugin_page');
-        });
-        add_action('admin_menu', function() {
-            add_menu_page('Bet Plugin Settings', 'Bet Plugin', 'manage_options', 'bet-plugin', function(){
-                include __DIR__.'/templates/admin/index.php';
-            });
+    public function insertScripts(){
+        wp_enqueue_style('betstyle', $this->baseURL.'css/main.css');
+        wp_enqueue_script('betscript', $this->baseURL.'js/main.js');
+    }
 
+    public function onActivate(){
+        $betPageID = get_option('bet_plugin_page');
+        if (!$betPageID){
+            $bet_page_array = array(
+                'post_title' => 'Bet page',
+                'post_content' => 'Bet page content',
+                'post_status' => 'publish'
+            );
+
+            $betPageID = wp_insert_post( $bet_page_array );
+            update_option('bet_plugin_page', $betPageID);
+        }
+    }
+
+    public function onDeActivate(){
+        delete_option('bet_plugin_page');
+    }
+
+    public function addPluginSettingsMenu(){
+        add_menu_page('Bet Plugin Settings', 'Bet Plugin', 'manage_options', 'bet-plugin', function(){
+            include __DIR__.'/templates/admin/index.php';
         });
     }
 }
