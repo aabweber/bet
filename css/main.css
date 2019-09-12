@@ -1,3 +1,19 @@
+/* Для нашей страницы будут свои стили */
 html, body, #page{
     background-color: #00A2E3;
+}
+/* форма для ставок */
+#makeBet{
+    background-color: white;
+    border-radius: 25px;
+    text-align: center;
+    margin:auto auto;
+    height: 60%;
+    position: absolute;
+    margin-top: 10%;
+    margin-left: 25%;
+}
+/* Заголовок у формы */
+#makeBet h3{
+    font-size: 20px;
 }

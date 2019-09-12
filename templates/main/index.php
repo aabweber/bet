@@ -6,4 +6,8 @@
  * Time: 09:47
  */
 
-echo 'main template';
+/** @var BetPlugin $bet */
+global $bet;
+
+/** подключаем форму */
+include __DIR__.'/form.php';
